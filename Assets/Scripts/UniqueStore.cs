@@ -13,7 +13,7 @@ public class UniqueStore<T> : IEnumerable<T>
 
     public bool Add(T item)
     {
-        if(!items.Contains(item)) // Don't allow duplicates
+        if (!items.Contains(item)) // Don't allow duplicates
         {
             items.Add(item);
             return true;

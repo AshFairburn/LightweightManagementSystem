@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LightweightManagementSystem
 {
@@ -80,7 +81,7 @@ namespace LightweightManagementSystem
             }
         }
 
-        public T Get<T>() where T : IManager
+        public T GetFirst<T>() where T : IManager
         {
             Type tType = typeof(T);
 
@@ -93,6 +94,23 @@ namespace LightweightManagementSystem
             }
 
             return default(T);
+        }
+
+        public int GetAll<T>(List<T> items) where T : IManager
+        {
+            Type tType = typeof(T);
+            int count = 0;
+
+            foreach (IManager manager in managers)
+            {
+                if (manager.GetType() == tType)
+                {
+                    items.Add((T)manager);
+                    count++;
+                }
+            }
+
+            return count;
         }
 
         // Static behaviour

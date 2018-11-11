@@ -14,4 +14,14 @@ public class ManagerA : MonoManager
     {
         Debug.Log("Manager Unregistered");
     }
+
+    protected override void PostAwake()
+    {
+
+    }
+
+    protected override void PostDestroy()
+    {
+
+    }
 }

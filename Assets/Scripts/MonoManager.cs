@@ -11,25 +11,33 @@ namespace LightweightManagementSystem
         public virtual void OnManagerRegistered(CoreBehaviour coreBehaviour) { }
         public virtual void OnManagerUnregistered() { }
 
-        private void Awake()
+        protected void Awake()
         {
             coreBehaviour = CoreBehaviour.Instance;
-            if(coreBehaviour != null)
+            if (coreBehaviour != null) // If the core behaviour exists
             {
                 coreBehaviour.AddManager(this);
             }
             else // Core behaviour doesn't exist yet
             {
-                Debug.LogError("Core behaviour doesn't exist!");
+                Debug.LogError("Unable to register, Core behaviour doesn't exist!");
             }
-        }
 
-        private void OnDestroy()
+            // Continue calls to derived object
+            PostAwake();
+        }
+        protected void OnDestroy()
         {
-            if(coreBehaviour != null) // Ensure the core behaviour is registered
+            if (coreBehaviour != null) // Ensure the core behaviour is registered
             {
                 coreBehaviour.RemoveManager(this);
             }
+
+            // Continue calls to derived object
+            PostDestroy();
         }
+
+        protected virtual void PostAwake() { }
+        protected virtual void PostDestroy() { }
     }
 }
