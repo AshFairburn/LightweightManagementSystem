@@ -259,9 +259,9 @@ namespace LightweightManagementSystem
         /// <returns></returns>
         public static bool IsCompileTimeEnabled()
         {
-#if LWMS
+#if LWMS // Check for preprocessor directive to know if the system should be enabled or not.
             return true;
-#else
+#else // Directive is undefined
             return false;
 #endif
         }

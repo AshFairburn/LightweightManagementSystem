@@ -16,7 +16,7 @@ namespace LightweightManagementSystem
             {
                 if (!CoreBehaviour.AddManager(this)) // Catch failure to add manager
                 {
-                    Debug.LogError("Unable to register manager " + GetType());
+                    Debug.LogError("Unable to add manager " + GetType());
                 }
             }
 
