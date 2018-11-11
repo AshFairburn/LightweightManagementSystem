@@ -4,13 +4,11 @@ using UnityEngine;
 
 namespace LightweightManagementSystem
 {
+    /// <summary>
+    /// An abstract base class representing a manager which doesn't need attaching to a GameObject.
+    /// </summary>
     public abstract class VirtualManager : IManager
     {
-        public VirtualManager()
-        {
-
-        }
-
         /// <summary>
         /// Initialize the manager.
         /// </summary>
