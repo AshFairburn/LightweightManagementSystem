@@ -10,7 +10,7 @@ public class ScoreManager : MonoManager
 
     public override void OnManagerRegistered(CoreBehaviour coreBehaviour)
     {
-
+        Debug.Log("Registered " + GetType());
     }
 
     public override void OnManagerUnregistered()

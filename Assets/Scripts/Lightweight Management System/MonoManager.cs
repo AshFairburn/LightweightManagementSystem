@@ -20,7 +20,7 @@ namespace LightweightManagementSystem
             }
             else // Core behaviour doesn't exist yet
             {
-                Debug.LogError("Unable to register, Core behaviour doesn't exist!");
+                Debug.LogError("Unable to register manager, Core behaviour doesn't exist! Is the management system enabled?");
             }
 
             // Continue calls to derived object

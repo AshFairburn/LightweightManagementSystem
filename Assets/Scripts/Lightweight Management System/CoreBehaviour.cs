@@ -81,7 +81,7 @@ namespace LightweightManagementSystem
             }
         }
 
-        public T GetFirst<T>() where T : IManager
+        private T GetFirst<T>() where T : IManager
         {
             Type tType = typeof(T);
 
@@ -96,7 +96,7 @@ namespace LightweightManagementSystem
             return default(T);
         }
 
-        public int GetAll<T>(List<T> items) where T : IManager
+        private int GetAll<T>(List<T> items) where T : IManager
         {
             Type tType = typeof(T);
             int count = 0;
@@ -118,12 +118,48 @@ namespace LightweightManagementSystem
         private static CoreBehaviour instance;
         public static CoreBehaviour Instance { get { return instance; } }
 
+        /// <summary>
+        /// Create the core behaviour instance, this must be called for the management system to function.
+        /// </summary>
         public static void CreateCoreBehaviour()
         {
             if (instance == null) // Create if not existent
             {
                 instance = new CoreBehaviour();
             }
+        }
+
+        public static T GetFirstManager<T>() where T : IManager
+        {
+            if (instance != null) // Ensure the instance exists
+            {
+                return instance.GetFirst<T>();
+            }
+            else // Instance doesn't exist, cannot get manager
+            {
+                return default(T);
+            }
+        }
+
+        public static int GetAllManagers<T>(List<T> items) where T : IManager
+        {
+            if(instance != null) // Ensure the instance exists
+            {
+                return instance.GetAll<T>(items);
+            }
+            else // Instance doesn't exist, cannot get managers
+            {
+                return 0;
+            }
+        }
+
+        public static bool IsCompileTimeEnabled()
+        {
+#if LWMS
+            return true;
+#else
+            return false;
+#endif
         }
     }
 }

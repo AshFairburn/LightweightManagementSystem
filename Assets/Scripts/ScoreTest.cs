@@ -8,19 +8,19 @@ public class ScoreTest : MonoBehaviour
     [SerializeField]
     private int score;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
+    // Use this for initialization
+    void Start()
     {
-	    if(Input.GetKeyDown(KeyCode.R))
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            CoreBehaviour cb = CoreBehaviour.Instance;
-            ScoreManager scoreManager = cb.GetFirst<ScoreManager>();
+            ScoreManager scoreManager = CoreBehaviour.GetFirstManager<ScoreManager>();
             scoreManager.AddScore(score);
         }
-	}
+    }
 }
