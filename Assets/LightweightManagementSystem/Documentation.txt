@@ -1,0 +1,23 @@
+LIGHTWEIGHT MANAGEMENT SYSTEM DOCUMENTATION
+
+The system is designed to provide management behaviour through a centralised manager. CoreBehaviour acts
+as the central point for listening, adding, removing and accessing managers. A singleton pattern is used
+to ensure only one instance of the system is active at once and will be initialized automatically through
+the RuntimeInitializeOnLoadMethod behaviour provided by Unity. Before the first scene is loaded, the system
+will be automatically created if the 'LWMS' preprocessor directive is defined, otherwise a warning will be
+printed at the start. This can be setup through the player settings in Unity.
+
+IManager represents a manager within the system, it's defined as an inteface to increase the usability of the
+system and prevent a direct tie to Unity MonoBehaviours or Components.
+
+To implement a manager, there are two ways. MonoManager is a simple wrapper over a MonoBehaviour with the
+basic IManager implementation provided through the Awake and OnDestroy methods. This has a minor side effect
+which replaces these methods with PostAwake and PostDestroy for the derived manager. Upon creation, the new
+manager will be automatically registered into the CoreBehaviour to allow any other class to access it using
+generics. Upon destruction, the manager will also be automatically removed from the CoreBehaviour.
+
+The second approach to implementing a manager is to directly implement the IManager interface and manually 
+register and un-register the object at appropriate times. This requires the developer to look at the way the
+MonoManager is integrated. Direct access to the CoreBehaviour through the static methods allows manual registration
+and unregistration by calling "CoreBehaviour.AddManager" and "CoreBehaviour.RemoveManager". The registration calls
+may fail if the manager is already registered within the system.
