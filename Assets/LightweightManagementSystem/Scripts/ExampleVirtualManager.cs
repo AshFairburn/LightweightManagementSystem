@@ -3,39 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using LightweightManagementSystem;
 
-public class ExampleVirtualManagerCreator
+namespace LightweightManagementSystem
 {
-    public static void CreateExampleManager()
+    public class ExampleVirtualManagerCreator
     {
-        // Create the new manager
-        ExampleVirtualManager manager = new ExampleVirtualManager();
+        public static void TestExampleManager()
+        {
+            // Create the new manager
+            ExampleVirtualManager manager = new ExampleVirtualManager();
 
-        // Initialize the manager, it will be registered automatically into the management system.
-        manager.Initialize();
+            // Initialize the manager, it will be registered automatically into the management system.
+            manager.Initialize();
 
-        // Get the manager through the core behaviour to demonstrate that it can be acquired from anywhere.
-        ExampleVirtualManager managerReference = CoreBehaviour.GetFirstManager<ExampleVirtualManager>();
+            // Get the manager through the core behaviour to demonstrate that it can be acquired from anywhere.
+            ExampleVirtualManager managerReference = CoreBehaviour.GetFirstManager<ExampleVirtualManager>();
 
-        // Deinitialize the manager and remove it from the management system.
-        managerReference.Deinitialize();
-    }
-}
-
-class ExampleVirtualManager : VirtualManager
-{
-    public override void OnManagerRegistered(CoreBehaviour coreBehaviour)
-    {
-        // Registration for virtual managers are initiated from the Initialize()
-        // method.
-
-        Debug.Log("Virtual score manager initialized");
+            // Deinitialize the manager and remove it from the management system.
+            managerReference.Deinitialize();
+        }
     }
 
-    public override void OnManagerUnregistered()
+    class ExampleVirtualManager : VirtualManager
     {
-        // Unregistration for virtual managers are initiated from the Deinitialize()
-        // method.
+        public override void OnManagerRegistered(CoreBehaviour coreBehaviour)
+        {
+            // Registration for virtual managers are initiated from the Initialize()
+            // method.
 
-        Debug.Log("Virtual score manager deinitialized");
+            Debug.Log("Virtual score manager initialized");
+        }
+
+        public override void OnManagerUnregistered()
+        {
+            // Unregistration for virtual managers are initiated from the Deinitialize()
+            // method.
+
+            Debug.Log("Virtual score manager deinitialized");
+        }
     }
 }

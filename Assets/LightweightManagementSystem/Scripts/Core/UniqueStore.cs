@@ -45,6 +45,16 @@ namespace LightweightManagementSystem
             return items.Remove(item);
         }
 
+        /// <summary>
+        /// Check whether an item is contained within the store.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns> Whether the item was found. </returns>
+        public bool Contains(T item)
+        {
+            return items.Contains(item);
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             return items.GetEnumerator();

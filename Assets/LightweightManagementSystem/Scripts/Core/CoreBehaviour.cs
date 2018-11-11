@@ -10,7 +10,15 @@ namespace LightweightManagementSystem
     /// </summary>
     public interface IManagementListener
     {
+        /// <summary>
+        /// Called when a manager has been registered into the system.
+        /// </summary>
+        /// <param name="manager"></param>
         void OnManagerRegistered(IManager manager);
+        /// <summary>
+        /// Called when a manager has been unregistered from the system.
+        /// </summary>
+        /// <param name="manager"></param>
         void OnManagerUnregistered(IManager manager);
     }
 
@@ -171,6 +179,40 @@ namespace LightweightManagementSystem
 
         private static CoreBehaviour instance;
         public static CoreBehaviour Instance { get { return instance; } }
+
+        /// <summary>
+        /// Add the given listener.
+        /// </summary>
+        /// <param name="listener"></param>
+        /// <returns> Whether the listener was added. </returns>
+        public static bool AddCoreListener(IManagementListener listener)
+        {
+            if (instance != null) // Ensure the instance exists
+            {
+                return instance.AddListener(listener);
+            }
+            else // Instance doesn't exist, cannot add listener
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Remove the given listener.
+        /// </summary>
+        /// <param name="listener"></param>
+        /// <returns> Whether the listener was removed. </returns>
+        public static bool RemoveCoreListener(IManagementListener listener)
+        {
+            if (instance != null) // Ensure the instance exists
+            {
+                return instance.RemoveListener(listener);
+            }
+            else // Instance doesn't exist, cannot remove listener
+            {
+                return false;
+            }
+        }
 
         /// <summary>
         /// Add a manager to the system.
