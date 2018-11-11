@@ -1,6 +1,6 @@
 LIGHTWEIGHT MANAGEMENT SYSTEM DOCUMENTATION
 
-The system is designed to provide management behaviour through a centralised manager. CoreBehaviour acts
+The system is designed to provide centralised management behaviour. The CoreBehaviour class acts
 as the central point for listening, adding, removing and accessing managers. A singleton pattern is used
 to ensure only one instance of the system is active at once and will be initialized automatically through
 the RuntimeInitializeOnLoadMethod behaviour provided by Unity. Before the first scene is loaded, the system
@@ -21,3 +21,7 @@ register and un-register the object at appropriate times. This requires the deve
 MonoManager is integrated. Direct access to the CoreBehaviour through the static methods allows manual registration
 and unregistration by calling "CoreBehaviour.AddManager" and "CoreBehaviour.RemoveManager". The registration calls
 may fail if the manager is already registered within the system.
+
+IManagementListener provides a way to listen for the registration and unregistration of managers on the CoreBehaviour
+using the standard observer pattern. Once registered, listeners will receive appropriate calls to notify and 
+reference the manager which was added or removed.
