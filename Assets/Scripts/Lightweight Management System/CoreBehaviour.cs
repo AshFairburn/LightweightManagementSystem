@@ -14,6 +14,11 @@ namespace LightweightManagementSystem
         void OnManagerUnregistered(IManager manager);
     }
 
+    /// <summary>
+    /// The central behaviour of the system. Only one of these should ever exist in memory and is accessible
+    /// through the singleton. Most the functionality is also wrapped into static behaviours to remove the need
+    /// for direct access to the instance.
+    /// </summary>
     public class CoreBehaviour
     {
         private UniqueStore<IManager> managers;
@@ -160,7 +165,9 @@ namespace LightweightManagementSystem
             return count;
         }
 
+        // ------------------------------------------------------------------------------------------
         // Static behaviour
+        // ------------------------------------------------------------------------------------------
 
         private static CoreBehaviour instance;
         public static CoreBehaviour Instance { get { return instance; } }
@@ -172,7 +179,7 @@ namespace LightweightManagementSystem
         /// <returns> Whether the manager was added. </returns>
         public static bool AddManager(IManager manager)
         {
-            if(instance != null) // Ensure the instance exists
+            if (instance != null) // Ensure the instance exists
             {
                 return instance.Add(manager);
             }
@@ -189,7 +196,7 @@ namespace LightweightManagementSystem
         /// <returns> Whether the manager was removed. </returns>
         public static bool RemoveManager(IManager manager)
         {
-            if(instance != null) // Ensure the instance exists
+            if (instance != null) // Ensure the instance exists
             {
                 return instance.Remove(manager);
             }
@@ -235,7 +242,7 @@ namespace LightweightManagementSystem
         /// <returns> The number of managers added to the given list. </returns>
         public static int GetAllManagers<T>(List<T> items) where T : IManager
         {
-            if(instance != null) // Ensure the instance exists
+            if (instance != null) // Ensure the instance exists
             {
                 return instance.GetAll<T>(items);
             }

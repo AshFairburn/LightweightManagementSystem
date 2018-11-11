@@ -1,9 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace LightweightManagementSystem
 {
+    /// <summary>
+    /// An abstract base class representing a manager in the form of a MonoBehaviour to be added to a gameobject within the scene.
+    /// </summary>
     public abstract class MonoManager : MonoBehaviour, IManager
     {
         public virtual void OnManagerRegistered(CoreBehaviour coreBehaviour) { }
@@ -11,7 +12,7 @@ namespace LightweightManagementSystem
 
         protected void Awake()
         {
-            if (CheckCompileStatus()) // Check if the system is enabled
+            if (CheckStatus()) // Check if the system is enabled
             {
                 if (!CoreBehaviour.AddManager(this)) // Catch failure to add manager
                 {
@@ -24,7 +25,7 @@ namespace LightweightManagementSystem
         }
         protected void OnDestroy()
         {
-            if (CheckCompileStatus()) // Check if the system is enabled
+            if (CheckStatus()) // Check if the system is enabled
             {
                 if (!CoreBehaviour.RemoveManager(this)) // Catch failrue to remove manager
                 {
@@ -36,9 +37,13 @@ namespace LightweightManagementSystem
             PostDestroy();
         }
 
-        private bool CheckCompileStatus()
+        /// <summary>
+        /// Check the status to see whether the lightweight management system is enabled or not.
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckStatus()
         {
-            if(CoreBehaviour.IsCompileTimeEnabled()) // Ensure the system is enabled
+            if (CoreBehaviour.IsCompileTimeEnabled()) // Ensure the system is enabled
             {
                 return true;
             }
