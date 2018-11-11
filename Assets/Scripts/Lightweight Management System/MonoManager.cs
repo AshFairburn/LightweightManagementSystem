@@ -6,21 +6,17 @@ namespace LightweightManagementSystem
 {
     public abstract class MonoManager : MonoBehaviour, IManager
     {
-        private CoreBehaviour coreBehaviour;
-
         public virtual void OnManagerRegistered(CoreBehaviour coreBehaviour) { }
         public virtual void OnManagerUnregistered() { }
 
         protected void Awake()
         {
-            coreBehaviour = CoreBehaviour.Instance;
-            if (coreBehaviour != null) // If the core behaviour exists
+            if (CheckCompileStatus()) // Check if the system is enabled
             {
-                coreBehaviour.AddManager(this);
-            }
-            else // Core behaviour doesn't exist yet
-            {
-                Debug.LogError("Unable to register manager, Core behaviour doesn't exist! Is the management system enabled?");
+                if (!CoreBehaviour.AddManager(this)) // Catch failure to add manager
+                {
+                    Debug.LogError("Unable to register manager " + GetType());
+                }
             }
 
             // Continue calls to derived object
@@ -28,13 +24,29 @@ namespace LightweightManagementSystem
         }
         protected void OnDestroy()
         {
-            if (coreBehaviour != null) // Ensure the core behaviour is registered
+            if (CheckCompileStatus()) // Check if the system is enabled
             {
-                coreBehaviour.RemoveManager(this);
+                if (!CoreBehaviour.RemoveManager(this)) // Catch failrue to remove manager
+                {
+                    Debug.LogError("Unable to remove manager " + GetType());
+                }
             }
 
             // Continue calls to derived object
             PostDestroy();
+        }
+
+        private bool CheckCompileStatus()
+        {
+            if(CoreBehaviour.IsCompileTimeEnabled()) // Ensure the system is enabled
+            {
+                return true;
+            }
+            else // System is disabled
+            {
+                Debug.LogError("Lightweight management system is disabled!");
+                return false;
+            }
         }
 
         protected virtual void PostAwake() { }

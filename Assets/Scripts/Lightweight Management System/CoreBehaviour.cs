@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace LightweightManagementSystem
 {
+    /// <summary>
+    /// An interface to allow listening to the management system. Notifications
+    /// are sent out to listeners when a manager is added or removed from the
+    /// system.
+    /// </summary>
     public interface IManagementListener
     {
         void OnManagerRegistered(IManager manager);
@@ -20,16 +25,30 @@ namespace LightweightManagementSystem
             listeners = new UniqueStore<IManagementListener>();
         }
 
+        /// <summary>
+        /// Add the given listener.
+        /// </summary>
+        /// <param name="listener"></param>
+        /// <returns> Whether the listener was added. </returns>
         public bool AddListener(IManagementListener listener)
         {
             return listeners.Add(listener);
         }
 
+        /// <summary>
+        /// Remove the given listener.
+        /// </summary>
+        /// <param name="listener"></param>
+        /// <returns> Whether the listener was removed. </returns>
         public bool RemoveListener(IManagementListener listener)
         {
             return listeners.Remove(listener);
         }
 
+        /// <summary>
+        /// Notify all listeners that a manager has been added.
+        /// </summary>
+        /// <param name="manager"></param>
         private void NotifyManagerAdded(IManager manager)
         {
             foreach (IManagementListener listener in listeners)
@@ -38,6 +57,10 @@ namespace LightweightManagementSystem
             }
         }
 
+        /// <summary>
+        /// Notify all listeners that a manager has been removed.
+        /// </summary>
+        /// <param name="manager"></param>
         private void NotifyManagerRemoved(IManager manager)
         {
             foreach (IManagementListener listener in listeners)
@@ -46,7 +69,12 @@ namespace LightweightManagementSystem
             }
         }
 
-        public bool AddManager(IManager manager)
+        /// <summary>
+        /// Add a manager to the system.
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <returns> Whether the manager was added. </returns>
+        public bool Add(IManager manager)
         {
             if (manager != null) // Entry is not null
             {
@@ -67,7 +95,12 @@ namespace LightweightManagementSystem
             }
         }
 
-        public bool RemoveManager(IManager manager)
+        /// <summary>
+        /// Remove a manager from the system.
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <returns> Whether the manager was removed. </returns>
+        public bool Remove(IManager manager)
         {
             if (managers.Remove(manager)) // Was removal successful?
             {
@@ -81,13 +114,18 @@ namespace LightweightManagementSystem
             }
         }
 
+        /// <summary>
+        /// Get the first instance of a manager matching the given type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns> The manager, if found, or the default of the given type. </returns>
         private T GetFirst<T>() where T : IManager
         {
             Type tType = typeof(T);
 
-            foreach (IManager manager in managers)
+            foreach (IManager manager in managers) // Iterate all managers
             {
-                if (manager.GetType() == tType)
+                if (manager.GetType() == tType) // Check for a type match
                 {
                     return (T)manager;
                 }
@@ -96,17 +134,26 @@ namespace LightweightManagementSystem
             return default(T);
         }
 
+        /// <summary>
+        /// Get all managers matching the given type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items"></param>
+        /// <returns> The number of managers added to the given list. </returns>
         private int GetAll<T>(List<T> items) where T : IManager
         {
-            Type tType = typeof(T);
             int count = 0;
 
-            foreach (IManager manager in managers)
+            if (items != null) // Ensure the given list isn't NULL
             {
-                if (manager.GetType() == tType)
+                Type tType = typeof(T);
+                foreach (IManager manager in managers) // Iterate all managers
                 {
-                    items.Add((T)manager);
-                    count++;
+                    if (manager.GetType() == tType) // Check for a type match
+                    {
+                        items.Add((T)manager);
+                        count++;
+                    }
                 }
             }
 
@@ -119,6 +166,40 @@ namespace LightweightManagementSystem
         public static CoreBehaviour Instance { get { return instance; } }
 
         /// <summary>
+        /// Add a manager to the system.
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <returns> Whether the manager was added. </returns>
+        public static bool AddManager(IManager manager)
+        {
+            if(instance != null) // Ensure the instance exists
+            {
+                return instance.Add(manager);
+            }
+            else // Instance doesn't exist, cannot add manager
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Remove a manager from the system.
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <returns> Whether the manager was removed. </returns>
+        public static bool RemoveManager(IManager manager)
+        {
+            if(instance != null) // Ensure the instance exists
+            {
+                return instance.Remove(manager);
+            }
+            else // Instance doesn't exist, cannot remove manager
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Create the core behaviour instance, this must be called for the management system to function.
         /// </summary>
         public static void CreateCoreBehaviour()
@@ -129,6 +210,11 @@ namespace LightweightManagementSystem
             }
         }
 
+        /// <summary>
+        /// Get the first instance of a manager matching the given type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns> The manager, if found, or the default of the given type. </returns>
         public static T GetFirstManager<T>() where T : IManager
         {
             if (instance != null) // Ensure the instance exists
@@ -141,6 +227,12 @@ namespace LightweightManagementSystem
             }
         }
 
+        /// <summary>
+        /// Get all managers matching the given type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items"></param>
+        /// <returns> The number of managers added to the given list. </returns>
         public static int GetAllManagers<T>(List<T> items) where T : IManager
         {
             if(instance != null) // Ensure the instance exists
@@ -153,6 +245,11 @@ namespace LightweightManagementSystem
             }
         }
 
+        /// <summary>
+        /// Is the management system compile-time defined? The system requires
+        /// the definition of 'LWMS' to function.
+        /// </summary>
+        /// <returns></returns>
         public static bool IsCompileTimeEnabled()
         {
 #if LWMS

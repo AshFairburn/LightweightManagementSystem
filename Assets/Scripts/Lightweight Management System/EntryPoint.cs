@@ -5,6 +5,11 @@ namespace LightweightManagementSystem
 {
     public static class EntryPoint
     {
+        /// <summary>
+        /// This method acts as an entry point for the management system. Before the first scene is loaded, this
+        /// helps to almost guarantee the prevention of conflicts where objects may ask for managers before the system
+        /// exists.
+        /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnBeforeSceneLoaded()
         {
