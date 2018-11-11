@@ -1,41 +1,58 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class UniqueStore<T> : IEnumerable<T>
+namespace LightweightManagementSystem
 {
-    private List<T> items;
-
-    public UniqueStore()
+    /// <summary>
+    /// A list wrapper to help prevent duplicate entries which prevents
+    /// overall code re-use for the same general behaviour.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class UniqueStore<T> : IEnumerable<T>
     {
-        items = new List<T>();
-    }
+        private List<T> items;
 
-    public bool Add(T item)
-    {
-        if (!items.Contains(item)) // Don't allow duplicates
+        public UniqueStore()
         {
-            items.Add(item);
-            return true;
+            items = new List<T>();
         }
-        else // Duplicate entry
+
+        /// <summary>
+        /// Add the given item to the store.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns> Whether the item was added. </returns>
+        public bool Add(T item)
         {
-            return false;
+            if (!items.Contains(item)) // Don't allow duplicates
+            {
+                items.Add(item);
+                return true;
+            }
+            else // Duplicate entry
+            {
+                return false;
+            }
         }
-    }
 
-    public bool Remove(T item)
-    {
-        return items.Remove(item);
-    }
+        /// <summary>
+        /// Remove the given item from the store.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns> Whether the item was removed. </returns>
+        public bool Remove(T item)
+        {
+            return items.Remove(item);
+        }
 
-    public IEnumerator<T> GetEnumerator()
-    {
-        return items.GetEnumerator();
-    }
+        public IEnumerator<T> GetEnumerator()
+        {
+            return items.GetEnumerator();
+        }
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return items.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return items.GetEnumerator();
+        }
     }
 }
